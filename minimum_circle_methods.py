@@ -1,7 +1,10 @@
 # minimum_circle_methods.py
+
 import time
 import math
-from minimum_circle_classes import Point, Circle, circle_through_three_points, generate_random_points, point_in_circle, distance, minimal_circle
+from minimum_circle_classes import Point, Circle, circle_through_three_points
+
+# Fonction du cercle minimum avec la méthode récursive Welzl
 def cercle_minimum_welzl(points):
     global execution_time_walzl
     def circle(points, r):
@@ -28,15 +31,12 @@ def cercle_minimum_welzl(points):
         else:
             return circle_through_three_points(r[0], r[1], r[2])
     start_time = time.time() * 1000
-    print(start_time)
     result = circle(points, [])
     end_time = time.time() * 1000
-    print(end_time)
-
     execution_time_walzl = end_time - start_time
     return result, execution_time_walzl
 
-
+# Fonction du cercle minimum avec la méthode naive
 def cercle_minimum_naif(points):
     global execution_time_naive
     start_time = time.time() * 1000
@@ -81,34 +81,4 @@ def cercle_minimum_naif(points):
 
     end_time = time.time() * 1000
     execution_time_naive = int(round(end_time - start_time))
-    print(f"execution_time : {execution_time_naive} ms")
     return Circle(Point(resX, resY), resRadiusSquared ** 0.5), execution_time_naive
-
-# def cercle_minimum_naif(points):
-#     global execution_time_naive
-#     start_time = time.time() * 1000
-#     center = None
-#     radius = float('inf')
-
-#     for i in range(len(points)):
-#         for j in range(i + 1, len(points)):
-#             for k in range(j + 1, len(points)):
-#                 # Forme le cercle circonscrit avec les points i, j, k
-#                 current_circle = circle_through_three_points(points[i], points[j], points[k])
-
-#                 # Vérifie si tous les autres points sont à l'intérieur du cercle
-#                 tous_les_points_dans_cercle = True
-#                 for l in range(len(points)):
-#                     if l != i and l != j and l != k:
-#                         if not point_in_circle(points[l], current_circle):
-#                             tous_les_points_dans_cercle = False
-#                             break
-
-#                 # Met à jour le cercle minimum si nécessaire
-#                 if tous_les_points_dans_cercle and current_circle.radius < radius:
-#                     center = current_circle.center
-#                     radius = current_circle.radius
-#     end_time = time.time() * 1000
-#     execution_time_naive = int(round(end_time - start_time))
-#     print(f"execution_time : {execution_time_naive} ms")
-#     return Circle(center, radius)
