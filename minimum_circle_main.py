@@ -8,7 +8,7 @@ execution_time_naive = None
 execution_time_welzl = None
 
 # Renvoie la fenêtre, le graph, et l'ensebmle des points et des cercles
-def plot_window(points, naive_circle, welzl_circle):
+def plot_window(points, welzl_circle,naive_circle):
     global execution_time_naive 
     global execution_time_welzl
     
@@ -62,11 +62,11 @@ def read_points_from_file(file_path):
 def lancer_execution():
     global execution_time_naive 
     global execution_time_welzl
-    for i in range(2, 4):  # Boucler de 1 à 200 inclus
+    for i in range(3, 4):  # Boucler de 1 à 200 inclus
         file_path = f'samples/test-{i}.points'
         points = read_points_from_file(file_path)
-        welzl_circle, execution_time_welzl = cercle_minimum_welzl(points)
         naive_circle, execution_time_naive = cercle_minimum_naif(points)
+        welzl_circle, execution_time_welzl = cercle_minimum_welzl(points)
         with open('fichiers_temps.txt', 'a') as fichier:
             fichier.write(f"{i}. {execution_time_naive} / {execution_time_welzl}\n")
     plot_window(points, welzl_circle, naive_circle)
@@ -74,10 +74,11 @@ def lancer_execution():
 def main():
     global execution_time_welzl
     global execution_time_naive
-    num_points = 250
-    #points = generate_random_points(num_points)
-    #welzl_circle, execution_time_welzl = cercle_minimum_welzl(points)
-    #naive_circle, execution_time_naive = cercle_minimum_naif(points)
+    num_points = 400
+    points = generate_random_points(num_points)
+    # welzl_circle, execution_time_welzl = cercle_minimum_welzl(points)
+    # naive_circle, execution_time_naive = cercle_minimum_naif(points)
+    # plot_window(points, welzl_circle, naive_circle)
     lancer_execution()
 
 

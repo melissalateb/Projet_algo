@@ -70,3 +70,8 @@ def minimal_circle(points):
     
     # Cas général : Trois points ou plus, utiliser la méthode circle_through_three_points
     return circle_through_three_points(points[0], points[1], points[2])
+
+def contains(circle, point):
+    distance_squared = (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2
+    return distance_squared <= circle.radius ** 2
+
