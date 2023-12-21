@@ -52,12 +52,9 @@ def read_points_from_file(file_path):
                 points.append(Point(x, y))
     return points
 
-def main():
+def lancer_execution():
+    global execution_time_naive 
     global execution_time_welzl
-    global execution_time_naive
-    num_points = 250
-    # points = generate_random_points(num_points)
-    
     for i in range(2, 4):  # Boucler de 1 à 200 inclus
         file_path = f'samples/test-{i}.points'
         points = read_points_from_file(file_path)
@@ -66,6 +63,15 @@ def main():
         with open('fichiers_temps.txt', 'a') as fichier:
             fichier.write(f"{i}. {execution_time_naive} / {execution_time_welzl}\n")
     plot_window(points, welzl_circle, naive_circle)
+
+def main():
+    global execution_time_welzl
+    global execution_time_naive
+    num_points = 250
+    #points = generate_random_points(num_points)
+    #welzl_circle, execution_time_welzl = cercle_minimum_welzl(points)
+    #naive_circle, execution_time_naive = cercle_minimum_naif(points)
+    lancer_execution()
 
 
 if __name__ == "__main__":
