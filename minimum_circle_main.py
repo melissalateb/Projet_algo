@@ -16,6 +16,7 @@ def plot_window(points, welzl_circle,naive_circle):
     fig, ax = plt.subplots(figsize=(8, 8), dpi=100)
     plot_points(ax, points)
     plot_circle(ax, naive_circle, color='r', label='Naive Circle')
+    print(welzl_circle)
     plot_circle(ax, welzl_circle, color='g', label='Welzl Circle')
     # Definit plusieurs labels et text de la figure et de la fenêtre
     ax.set_title(f'Temps d\'exécution naif: {execution_time_naive} ms\nTemps d\'exécution walzl: {execution_time_welzl} ms')
@@ -43,7 +44,7 @@ def plot_circle(ax, circle, color, label):
         linestyle = 'dashed'
     if circle:
         circle_patch = plt.Circle((circle.center.x, circle.center.y),
-                                  circle.radius, fill=False, color=color, linestyle = linestyle, label=label)
+                                circle.radius, fill=False, color=color, linestyle = linestyle, label=label)
         ax.add_patch(circle_patch)
 
 # Recupère les coordonnées des points à partir d'un fichier donnée
@@ -74,8 +75,8 @@ def lancer_execution():
 def main():
     global execution_time_welzl
     global execution_time_naive
-    num_points = 400
-    points = generate_random_points(num_points)
+    # num_points = 20
+    # points = generate_random_points(num_points)
     # welzl_circle, execution_time_welzl = cercle_minimum_welzl(points)
     # naive_circle, execution_time_naive = cercle_minimum_naif(points)
     # plot_window(points, welzl_circle, naive_circle)

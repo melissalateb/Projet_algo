@@ -9,10 +9,9 @@ from minimum_circle_classes import Point, Circle, circle_through_three_points, d
 def cercle_minimum_welzl(points):
     global execution_time_welzl
     start_time = time.time() * 1000
-    print(start_time)
-    result = welzl_minimal_circle(points, [])
+    # result = welzl_minimal_circle(points, [])
+    result =  cercle_minimum_welzl_optimiser(points)
     end_time = time.time() * 1000
-    print(end_time)
     execution_time_welzl = end_time - start_time
     print("temps dexecusion %s" % execution_time_welzl)
     return result, execution_time_welzl
@@ -71,36 +70,31 @@ def welzl_minimal_circle(P, R):
 
 # // Ajout stackoverflo error pour samedi
 #  Notre version optimisé
-# def cercle_minimum_welzl(points):
-#     global execution_time_walzl
-#     def circle(points, r):
-#         if len(points) == 0 or len(r) == 3:
-#             return trivial_circle(r)
+def cercle_minimum_welzl_optimiser(points):
+    def circle(points, r):
+        if len(points) == 0 or len(r) == 3:
+            return trivial_circle(r)
 
-#         p = points[0]
-#         min_circle = circle(points[1:], r)
-#         if min_circle is None or not min_circle.contains_point(p):
-#             min_circle = circle(points[1:], r + [p])
+        p = points[0]
+        min_circle = circle(points[1:], r)
+        if min_circle is None or not min_circle.contains_point(p):
+            min_circle = circle(points[1:], r + [p])
 
-#         return min_circle
+        return min_circle
 
-#     def trivial_circle(r):
-#         if len(r) == 0:
-#             return Circle(Point(0, 0), 0)
-#         elif len(r) == 1:
-#             return Circle(r[0], 0)
-#         elif len(r) == 2:
-#             center_x = (r[0].x + r[1].x) / 2
-#             center_y = (r[0].y + r[1].y) / 2
-#             radius = math.sqrt((r[0].x - r[1].x)** 2 + (r[0].y - r[1].y)**2 ) / 2
-#             return Circle(Point(center_x, center_y), radius)
-#         else:
-#             return circle_through_three_points(r[0], r[1], r[2])
-#     start_time = time.time() * 1000
-#     result = circle(points, [])
-#     end_time = time.time() * 1000
-#     execution_time_walzl = end_time - start_time
-#     return result, execution_time_walzl
+    def trivial_circle(r):
+        if len(r) == 0:
+            return Circle(Point(0, 0), 0)
+        elif len(r) == 1:
+            return Circle(r[0], 0)
+        elif len(r) == 2:
+            center_x = (r[0].x + r[1].x) / 2
+            center_y = (r[0].y + r[1].y) / 2
+            radius = math.sqrt((r[0].x - r[1].x)** 2 + (r[0].y - r[1].y)**2 ) / 2
+            return Circle(Point(center_x, center_y), radius)
+        else:
+            return circle_through_three_points(r[0], r[1], r[2])
+    return circle(points, [])
 
 # La complexité de la méthode récursive Welzl est déterminée par la relation de récurrence suivante :
 # T(n) = 2 * T(n - 1) + O(1), où T est la fonction de complexité temporelle, et n est le nombre de points.
