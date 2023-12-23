@@ -9,15 +9,16 @@ from minimum_circle_classes import Point, Circle, circle_through_three_points, d
 def cercle_minimum_welzl(points):
     global execution_time_welzl
     start_time = time.time() * 1000
-    # result = welzl_minimal_circle(points, [])
-    result =  cercle_minimum_welzl_optimiser(points)
+    result = welzl_minimal_circle(points, [])
+    # result = welzl_minimal_circle_iteratif(points)
+    # result =  cercle_minimum_welzl_optimiser(points)
     end_time = time.time() * 1000
     execution_time_welzl = end_time - start_time
     print("temps dexecusion %s" % execution_time_welzl)
     return result, execution_time_welzl
 
 
-def trivial(P, R):
+def trivial_1(P, R):
     if not P and len(R) == 0:
         return Circle(Point(0, 0), 0)
 
@@ -43,7 +44,7 @@ def welzl_minimal_circle(P, R):
     d = Circle(Point(0, 0), 0)
 
     if not P1 or len(R) == 3:
-        d = trivial([], R)
+        d = trivial_1([], R)
     else:
         pt = P1[rand.randint(0, len(P1) - 1)]
         P1.remove(pt)
@@ -55,18 +56,6 @@ def welzl_minimal_circle(P, R):
             R.remove(pt)
 
     return d
-
-
-# Complexité temporelle de l'algorithme welzl : O(4^n)
-# - Dans le pire cas, l'algorithme a une complexité exponentielle, résultant de 2^n appels récursifs.
-# - La fonction 'trivial' ajoute un facteur de 4 dans l'exposant avec 8 possibilités, mais certaines sont éliminées.
-#
-# Complexité spatiale : O(n) (profondeur de la récursion)
-#
-# Considérer des alternatives comme l'algorithme linéaire de Welzl pour une efficacité accrue.
-
-
-
 
 # // Ajout stackoverflo error pour samedi
 #  Notre version optimisé
@@ -95,6 +84,54 @@ def cercle_minimum_welzl_optimiser(points):
         else:
             return circle_through_three_points(r[0], r[1], r[2])
     return circle(points, [])
+
+def welzl_minimal_circle_iteratif(points):
+    P = points.copy()
+    rand = random.Random()
+
+    d = Circle(Point(0, 0), 0)
+    R = []
+    stack = [(P.copy(), R.copy(), d)]
+
+    while stack:
+        P, R, d = stack.pop()
+        
+
+        if not P or len(R) == 3:
+            # Utilisez None pour indiquer que les points sont colinéaires dans le cas trivial
+            d = trivial_1([], R)
+
+            if d is None:
+                # Gérer le cas de trois points colinéaires d'une manière appropriée
+                pass
+        else:
+            pt = rand.choice(P)
+            
+            try:
+                stack.append((P.copy(), R.copy(), d))
+                if d is not None and not contains(d, pt):
+                    R.append(pt)
+                    stack.append((P.copy(), R.copy(), d))
+                    P.remove(pt)
+                    R.remove(pt)
+            except ZeroDivisionError:
+                # Gérer le cas de trois points colinéaires d'une manière appropriée
+                pass
+
+    return d
+
+def trivial(points):
+    if len(points) == 0:
+        return Circle(Point(0, 0), 0)
+    elif len(points) == 1:
+        return Circle(points[0], 0)
+    elif len(points) == 2:
+        center = Point((points[0].x + points[1].x) / 2, (points[0].y + points[1].y) / 2)
+        radius = distance(center, points[0])
+        return Circle(center, radius)
+    else:
+        return circle_through_three_points(points[0], points[1], points[2])
+
 
 # La complexité de la méthode récursive Welzl est déterminée par la relation de récurrence suivante :
 # T(n) = 2 * T(n - 1) + O(1), où T est la fonction de complexité temporelle, et n est le nombre de points.

@@ -2,7 +2,7 @@
 
 import matplotlib.pyplot as plt
 from minimum_circle_classes import Point, Circle, circle_through_three_points, generate_random_points, point_in_circle, distance, minimal_circle
-from minimum_circle_methods import cercle_minimum_welzl, cercle_minimum_naif
+from minimum_circle_methods import cercle_minimum_welzl, cercle_minimum_naif, welzl_minimal_circle_iteratif
 
 execution_time_naive = None
 execution_time_welzl = None
@@ -16,7 +16,6 @@ def plot_window(points, welzl_circle,naive_circle):
     fig, ax = plt.subplots(figsize=(8, 8), dpi=100)
     plot_points(ax, points)
     plot_circle(ax, naive_circle, color='r', label='Naive Circle')
-    print(welzl_circle)
     plot_circle(ax, welzl_circle, color='g', label='Welzl Circle')
     # Definit plusieurs labels et text de la figure et de la fenêtre
     ax.set_title(f'Temps d\'exécution naif: {execution_time_naive} ms\nTemps d\'exécution walzl: {execution_time_welzl} ms')
@@ -63,11 +62,12 @@ def read_points_from_file(file_path):
 def lancer_execution():
     global execution_time_naive 
     global execution_time_welzl
-    for i in range(3, 4):  # Boucler de 1 à 200 inclus
+    for i in range(5, 6):  # Boucler sur les fichiers de corordonnées de points
         file_path = f'samples/test-{i}.points'
         points = read_points_from_file(file_path)
         naive_circle, execution_time_naive = cercle_minimum_naif(points)
         welzl_circle, execution_time_welzl = cercle_minimum_welzl(points)
+        # welzl_circle = welzl_minimal_circle_iteratif(points)
         with open('fichiers_temps.txt', 'a') as fichier:
             fichier.write(f"{i}. {execution_time_naive} / {execution_time_welzl}\n")
     plot_window(points, welzl_circle, naive_circle)
@@ -80,7 +80,8 @@ def main():
     # welzl_circle, execution_time_welzl = cercle_minimum_welzl(points)
     # naive_circle, execution_time_naive = cercle_minimum_naif(points)
     # plot_window(points, welzl_circle, naive_circle)
-    lancer_execution()
+    
+    lancer_execution() #Dossier test .points du prof
 
 
 if __name__ == "__main__":

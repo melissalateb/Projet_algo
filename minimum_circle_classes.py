@@ -39,7 +39,10 @@ def circle_through_three_points(p1, p2, p3):
 
     # Calcule le dénominateur commun dans les équations des coordonnées du centre du cercle circonscrit
     d = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by))
-
+    
+    # Vérifie si les points sont colinéaires
+    if d == 0:
+        return None
     # Calcule les coordonnées du centre du cercle circonscrit
     ux = ((ax ** 2 + ay ** 2) * (by - cy) + (bx ** 2 + by ** 2) * (cy - ay) + (cx ** 2 + cy ** 2) * (ay - by)) / d
     uy = ((ax ** 2 + ay ** 2) * (cx - bx) + (bx ** 2 + by ** 2) * (ax - cx) + (cx ** 2 + cy ** 2) * (bx - ax)) / d
